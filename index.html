@@ -88,26 +88,90 @@
     padding:7px 10px;font-size:11px;font-weight:750;cursor:pointer
   }
   .small-btn:hover{background:#18243b}
-  .frame-wrap{position:relative;background:#f3f4f6;min-height:720px}
-  iframe{display:block;width:100%;height:78vh;min-height:720px;border:0;background:white}
+  .frame-wrap{
+    position:relative;
+    background:#eef1f6;
+    min-height:320px;
+    overflow:hidden;
+  }
+  iframe{
+    display:block;
+    width:100%;
+    height:720px;
+    border:0;
+    background:transparent;
+    overflow:hidden;
+  }
   iframe[hidden]{display:none}
   .loading{
-    position:absolute;inset:0;display:grid;place-items:center;background:#0c1322;color:#aab6cb;
-    z-index:2;font-size:13px;transition:opacity .2s ease
+    position:absolute;inset:0;min-height:320px;display:grid;place-items:center;
+    background:#0c1322;color:#aab6cb;z-index:2;font-size:13px;
+    transition:opacity .2s ease
   }
   .loading.hide{opacity:0;pointer-events:none}
   .spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.12);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}
   @keyframes spin{to{transform:rotate(360deg)}}
   .hint{color:var(--muted);font-size:11px;text-align:center;margin-top:13px}
-  @media(max-width:760px){
-    .app{width:min(100% - 16px,1500px);padding-top:12px}
-    .topbar{align-items:flex-start}
+
+  @media (max-width:1024px){
+    .app{width:min(100% - 20px,1500px);padding:14px 0 24px}
+    .chooser{gap:10px;padding:10px}
+    .mode{padding:12px 13px}
+    .mode-desc{font-size:11px}
+    .workspace-head{padding:9px 12px}
+  }
+
+  @media (max-width:680px){
+    .app{width:100%;padding:0}
+    .topbar{
+      padding:14px 14px 12px;
+      margin:0;
+      background:rgba(7,11,20,.96);
+      border-bottom:1px solid var(--line);
+    }
+    .logo{width:40px;height:40px;border-radius:12px}
+    .logo svg{width:22px;height:22px}
+    h1{font-size:20px}
+    .brand p{font-size:11px;margin-top:2px}
     .pill{display:none}
-    .chooser{grid-template-columns:1fr;padding:10px}
-    .mode{padding:12px}
-    .workspace-head{padding:9px 11px}
-    iframe{height:82vh;min-height:650px}
-    .frame-wrap{min-height:650px}
+    .shell{border-radius:0;border-left:0;border-right:0;box-shadow:none}
+    .chooser{
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      padding:10px;
+      position:sticky;
+      top:0;
+      z-index:5;
+      backdrop-filter:blur(16px);
+    }
+    .mode{
+      min-width:0;
+      padding:10px;
+      gap:9px;
+      border-radius:14px;
+      align-items:center;
+    }
+    .mode-icon{width:36px;height:36px;border-radius:11px}
+    .mode-icon svg{width:19px;height:19px}
+    .mode-title{font-size:12px;line-height:1.2;display:block}
+    .mode-desc,.tag{display:none}
+    .workspace-head{min-height:42px;padding:8px 10px}
+    .current{font-size:11px;min-width:0}
+    .small-btn{padding:6px 8px;font-size:10px}
+    .frame-wrap{min-height:260px}
+    .loading{min-height:260px}
+    .hint{padding:0 14px 14px;margin-top:10px}
+  }
+
+  @media (max-width:420px){
+    .brand p{display:none}
+    .chooser{gap:6px;padding:8px}
+    .mode{padding:9px 8px}
+    .mode-icon{width:32px;height:32px}
+    .mode-title{font-size:11px}
+    .workspace-head{padding:7px 9px}
+    #reloadBtn{font-size:0;width:34px;height:30px;padding:0}
+    #reloadBtn::after{content:"↻";font-size:18px;line-height:1}
   }
 </style>
 </head>
@@ -161,8 +225,8 @@
 
     <div class="frame-wrap">
       <div class="loading" id="loading"><div><div class="spinner"></div>Loading generator…</div></div>
-      <iframe id="frameA" title="Classic Halftone QR Generator" referrerpolicy="no-referrer"></iframe>
-      <iframe id="frameB" title="Enhanced Image Halftone QR Generator" referrerpolicy="no-referrer" hidden></iframe>
+      <iframe id="frameA" title="Classic Halftone QR Generator" referrerpolicy="no-referrer" scrolling="no"></iframe>
+      <iframe id="frameB" title="Enhanced Image Halftone QR Generator" referrerpolicy="no-referrer" scrolling="no" hidden></iframe>
     </div>
   </section>
   <div class="hint">Choose either generator above. Each mode keeps its own controls and rendering engine.</div>
@@ -187,16 +251,143 @@
   const loading = document.getElementById('loading');
   const currentLabel = document.getElementById('currentLabel');
   let active = 'frameA';
+  const resizeObservers = new WeakMap();
+
+  const responsiveStyles = {
+    frameA: `
+      <style id="fusion-responsive">
+        html,body{height:auto!important;min-height:0!important;overflow-x:hidden!important}
+        body>.min-h-screen{
+          min-height:0!important;
+          padding:22px!important;
+          justify-content:flex-start!important;
+        }
+        body>.min-h-screen>.max-w-5xl{
+          width:100%!important;
+          max-width:1180px!important;
+          margin:0 auto!important;
+          border-radius:22px!important;
+        }
+        body>.min-h-screen>.max-w-5xl>div:first-child{width:42%!important;padding:26px!important}
+        body>.min-h-screen>.max-w-5xl>div:nth-child(2){width:58%!important;padding:26px!important;min-height:520px!important}
+        #output{max-width:100%!important;height:auto!important}
+        @media(max-width:1100px){
+          body>.min-h-screen{padding:16px!important}
+          body>.min-h-screen>.max-w-5xl{flex-direction:column!important}
+          body>.min-h-screen>.max-w-5xl>div:first-child,
+          body>.min-h-screen>.max-w-5xl>div:nth-child(2){
+            width:100%!important;
+            border-right:0!important;
+          }
+          body>.min-h-screen>.max-w-5xl>div:first-child{border-bottom:1px solid #e5e7eb!important}
+          body>.min-h-screen>.max-w-5xl>div:nth-child(2){min-height:440px!important}
+        }
+        @media(max-width:640px){
+          body>.min-h-screen{padding:8px!important}
+          body>.min-h-screen>.max-w-5xl{border-radius:16px!important}
+          body>.min-h-screen>.max-w-5xl>div:first-child{padding:16px!important}
+          body>.min-h-screen>.max-w-5xl>div:nth-child(2){padding:16px!important;min-height:340px!important}
+          body>.min-h-screen>.max-w-5xl>div:first-child .grid.grid-cols-2{
+            grid-template-columns:1fr!important;
+            gap:12px!important;
+          }
+          body>.min-h-screen>.max-w-5xl>div:first-child h1{font-size:1.55rem!important}
+          body>.min-h-screen>.max-w-5xl>div:first-child .mb-8{margin-bottom:1.15rem!important}
+          body>.min-h-screen>.max-w-5xl>div:first-child .space-y-5>*+*{margin-top:1rem!important}
+          textarea{min-height:88px!important}
+          #output{max-height:none!important}
+        }
+      </style>`,
+    frameB: `
+      <style id="fusion-responsive">
+        html,body{height:auto!important;min-height:0!important;overflow-x:hidden!important}
+        body{padding:0!important}
+        .wrap{
+          width:min(1180px,calc(100% - 32px))!important;
+          margin:18px auto!important;
+          grid-template-columns:minmax(300px,380px) minmax(0,1fr)!important;
+          gap:18px!important;
+        }
+        .stage{min-height:0!important}
+        .canvas-wrap{min-height:500px!important}
+        @media(max-width:900px){
+          .wrap{
+            width:calc(100% - 24px)!important;
+            margin:12px auto!important;
+            grid-template-columns:1fr!important;
+          }
+          .stage{min-height:0!important}
+          .canvas-wrap{min-height:390px!important}
+        }
+        @media(max-width:560px){
+          .wrap{width:calc(100% - 12px)!important;margin:6px auto!important;gap:10px!important}
+          .card{border-radius:16px!important}
+          .panel,.stage{padding:15px!important}
+          .row{grid-template-columns:1fr!important;gap:0!important}
+          .row>div+div label{margin-top:12px!important}
+          .btns{grid-template-columns:1fr!important}
+          .canvas-wrap{min-height:300px!important;padding:10px!important;border-radius:14px!important}
+          .stage-head{align-items:flex-start!important;flex-direction:column!important;gap:8px!important}
+          textarea{min-height:82px!important}
+        }
+      </style>`
+  };
+
+  function decodeDataUrl(dataUrl){
+    const raw = dataUrl.split(',')[1] || '';
+    const binary = atob(raw);
+    const bytes = Uint8Array.from(binary, ch => ch.charCodeAt(0));
+    return new TextDecoder().decode(bytes);
+  }
+
+  function makeResponsiveDocument(id){
+    let doc = decodeDataUrl(sources[id]);
+    const style = responsiveStyles[id] || '';
+    return doc.includes('</head>') ? doc.replace('</head>', style + '</head>') : style + doc;
+  }
+
+  function resizeFrame(id){
+    const frame = frames[id];
+    if (!frame || frame.hidden || !frame.contentDocument) return;
+    const doc = frame.contentDocument;
+    const body = doc.body;
+    const root = doc.documentElement;
+    if (!body || !root) return;
+    const h = Math.max(
+      body.scrollHeight, body.offsetHeight,
+      root.scrollHeight, root.offsetHeight
+    );
+    frame.style.height = Math.max(320, h + 2) + 'px';
+  }
+
+  function attachAutoResize(id){
+    const frame = frames[id];
+    const doc = frame.contentDocument;
+    if (!doc || !doc.body) return;
+    const old = resizeObservers.get(frame);
+    if (old) old.disconnect();
+    const ro = new ResizeObserver(() => resizeFrame(id));
+    ro.observe(doc.body);
+    ro.observe(doc.documentElement);
+    resizeObservers.set(frame, ro);
+    setTimeout(() => resizeFrame(id), 80);
+    setTimeout(() => resizeFrame(id), 500);
+    setTimeout(() => resizeFrame(id), 1400);
+  }
 
   function loadFrame(id, force=false) {
     const frame = frames[id];
     if (force || !frame.dataset.loaded) {
       loading.classList.remove('hide');
-      frame.onload = () => loading.classList.add('hide');
-      frame.src = sources[id];
+      frame.onload = () => {
+        loading.classList.add('hide');
+        attachAutoResize(id);
+      };
+      frame.srcdoc = makeResponsiveDocument(id);
       frame.dataset.loaded = '1';
     } else {
       loading.classList.add('hide');
+      resizeFrame(id);
     }
   }
 
@@ -226,6 +417,12 @@
     if (saved === 'frameA' || saved === 'frameB') initial = saved;
   } catch(e) {}
   selectMode(initial);
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => resizeFrame(active), 120);
+  });
 </script>
 </body>
 </html>
