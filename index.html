@@ -4,7 +4,60 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="dark">
-<title>QR Fusion Studio — Two Halftone QR Generators</title>
+<title>Free Halftone QR Code Generator | QR Fusion Studio</title>
+<meta name="description" content="Create artistic halftone QR codes from your own images for free. Choose Classic Halftone or Enhanced Image QR, customize readability, and download a high-quality PNG.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#070b14">
+<link rel="canonical" href="https://image-to-halftone-qr-generator.web.app/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free Halftone QR Code Generator | QR Fusion Studio">
+<meta property="og:description" content="Turn your images into artistic, scannable halftone QR codes online. Free browser-based tool with two QR styles.">
+<meta property="og:url" content="https://image-to-halftone-qr-generator.web.app/">
+<meta property="og:site_name" content="QR Fusion Studio">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Halftone QR Code Generator">
+<meta name="twitter:description" content="Create image-based halftone QR codes online and download them as PNG.">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebApplication",
+  "name":"QR Fusion Studio",
+  "url":"https://image-to-halftone-qr-generator.web.app/",
+  "applicationCategory":"UtilitiesApplication",
+  "operatingSystem":"Any",
+  "browserRequirements":"Requires a modern web browser with JavaScript enabled.",
+  "description":"A free browser-based tool for creating artistic halftone QR codes from user images.",
+  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"FAQPage",
+  "mainEntity":[
+    {
+      "@type":"Question",
+      "name":"What is a halftone QR code?",
+      "acceptedAnswer":{"@type":"Answer","text":"A halftone QR code blends a QR pattern with image-like shading or pixels while preserving the important QR control patterns needed for scanning."}
+    },
+    {
+      "@type":"Question",
+      "name":"Are my uploaded images sent to a server?",
+      "acceptedAnswer":{"@type":"Answer","text":"The QR generation in QR Fusion Studio runs in your browser. Your selected image and QR content are processed locally by the tool."}
+    },
+    {
+      "@type":"Question",
+      "name":"Which error correction level should I use?",
+      "acceptedAnswer":{"@type":"Answer","text":"High error correction is usually the safest starting point for stylized QR codes because it provides more redundancy."}
+    },
+    {
+      "@type":"Question",
+      "name":"Can I download the QR code?",
+      "acceptedAnswer":{"@type":"Answer","text":"Yes. After generating a QR code you can download the result as a PNG image."}
+    }
+  ]
+}
+</script>
 <style>
   :root {
     --bg:#070b14;
@@ -173,6 +226,57 @@
     #reloadBtn{font-size:0;width:34px;height:30px;padding:0}
     #reloadBtn::after{content:"↻";font-size:18px;line-height:1}
   }
+
+  .site-nav{
+    display:flex;flex-wrap:wrap;gap:8px;margin:-5px 0 14px;
+    padding:0 4px;
+  }
+  .site-nav a{
+    color:#c8d3e6;text-decoration:none;font-size:12px;font-weight:750;
+    padding:7px 10px;border:1px solid var(--line);border-radius:999px;
+    background:rgba(255,255,255,.028);
+  }
+  .site-nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+  .seo-intro{
+    margin:0 4px 16px;padding:15px 18px;border:1px solid var(--line);
+    border-radius:18px;background:rgba(255,255,255,.025)
+  }
+  .seo-intro h2{margin:0 0 5px;font-size:16px;letter-spacing:-.02em}
+  .seo-intro p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+  .content-area{
+    width:min(1080px,calc(100% - 8px));margin:28px auto 0;
+    display:grid;gap:18px
+  }
+  .content-card{
+    border:1px solid var(--line);border-radius:22px;padding:22px;
+    background:rgba(14,21,38,.72)
+  }
+  .content-card h2{font-size:20px;margin:0 0 10px}
+  .content-card h3{font-size:15px;margin:18px 0 6px}
+  .content-card p,.content-card li{color:#b8c4d7;font-size:14px;line-height:1.7}
+  .content-card ul,.content-card ol{padding-left:20px}
+  .faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .faq-item{padding:15px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02)}
+  .faq-item h3{margin:0 0 6px;font-size:14px}
+  .faq-item p{margin:0;font-size:13px}
+  .site-footer{
+    width:min(1080px,calc(100% - 8px));margin:20px auto 0;padding:18px 4px 6px;
+    border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;
+    align-items:center;color:var(--muted);font-size:12px
+  }
+  .footer-links{display:flex;flex-wrap:wrap;gap:12px}
+  .footer-links a{color:#c6d2e6;text-decoration:none}
+  .footer-links a:hover{color:#fff}
+  @media(max-width:680px){
+    .site-nav{padding:10px 10px 0;margin:0;overflow:auto;flex-wrap:nowrap}
+    .site-nav a{white-space:nowrap}
+    .seo-intro{margin:10px;border-radius:14px;padding:13px}
+    .content-area{width:calc(100% - 20px);margin-top:18px}
+    .content-card{padding:17px;border-radius:16px}
+    .faq-grid{grid-template-columns:1fr}
+    .site-footer{width:calc(100% - 20px);flex-direction:column;align-items:flex-start}
+  }
+
 </style>
 </head>
 <body>
@@ -193,7 +297,21 @@
     <div class="pill">Single HTML • 2 generators</div>
   </header>
 
-  <section class="shell">
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="#generator">Generator</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#faq">FAQ</a>
+    <a href="/about.html">About</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+    <a href="/contact.html">Contact</a>
+  </nav>
+  <section class="seo-intro">
+    <h2>Free online halftone QR code generator</h2>
+    <p>Turn a photo or image into an artistic QR code directly in your browser. Choose between Classic Halftone and Enhanced Image QR, adjust scan readability, and export the result as a PNG.</p>
+  </section>
+
+  <section class="shell" id="generator">
     <div class="chooser" role="tablist" aria-label="Choose QR generator">
       <button class="mode active" id="modeA" role="tab" aria-selected="true" aria-controls="frameA" data-target="frameA">
         <span class="mode-icon">
@@ -230,6 +348,70 @@
     </div>
   </section>
   <div class="hint">Choose either generator above. Each mode keeps its own controls and rendering engine.</div>
+
+  <!-- ADSENSE_SLOT_AFTER_GENERATOR -->
+
+  <section class="content-area" aria-label="About this QR generator">
+    <article class="content-card" id="how-it-works">
+      <h2>How to create an image halftone QR code</h2>
+      <ol>
+        <li>Choose <strong>Classic Halftone</strong> for more visual controls or <strong>Enhanced Image QR</strong> for a cleaner export workflow.</li>
+        <li>Enter the URL or text you want the QR code to contain.</li>
+        <li>Upload your image. The tool processes it in your browser and converts it into a QR-friendly halftone pattern.</li>
+        <li>Start with High error correction for stylized QR codes, then adjust the available image and readability controls.</li>
+        <li>Generate the QR code, scan-test it with your phone, and download the PNG when you are happy with the result.</li>
+      </ol>
+
+      <h3>Why use two generator modes?</h3>
+      <p>Classic Halftone gives you more control over brightness, dot size, QR version and background treatment. Enhanced Image QR focuses on protected QR control areas, output scale and a clean quiet-zone export. This lets you choose between visual flexibility and a more controlled export style.</p>
+
+      <h3>Privacy by design</h3>
+      <p>Your selected image and QR content are handled by the browser-based generator. The tool does not require an account or upload your image to an application server in order to generate the QR code. Always avoid putting private or sensitive information inside a QR code that you plan to share publicly.</p>
+    </article>
+
+    <article class="content-card" id="faq">
+      <h2>Frequently asked questions</h2>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h3>What is a halftone QR code?</h3>
+          <p>It is a stylized QR code that combines QR modules with image-like shading or pixels while keeping the important QR patterns readable.</p>
+        </div>
+        <div class="faq-item">
+          <h3>What error correction should I use?</h3>
+          <p>High error correction is a good starting point for artistic QR codes because it adds more redundancy, but every finished QR should still be scan-tested.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Does the tool work on phones and tablets?</h3>
+          <p>Yes. QR Fusion Studio is responsive and can be used on modern desktop, tablet and mobile browsers.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can I use a URL or normal text?</h3>
+          <p>Yes. You can encode a website link or ordinary text, as long as it fits within the selected QR version and error-correction capacity.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Why should I test the exported QR?</h3>
+          <p>Stylized QR codes trade some visual simplicity for design. Testing the actual exported PNG confirms that your phone can still scan it reliably.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is QR Fusion Studio free?</h3>
+          <p>Yes. The generator can be used online without creating an account.</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ADSENSE_SLOT_BEFORE_FOOTER -->
+
+  <footer class="site-footer">
+    <span>© 2026 QR Fusion Studio</span>
+    <div class="footer-links">
+      <a href="/about.html">About</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms</a>
+      <a href="/contact.html">Contact</a>
+    </div>
+  </footer>
+
 </div>
 
 <script>
